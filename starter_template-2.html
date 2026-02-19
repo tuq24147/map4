@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic Leaflet Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+</head>
+
+<body>
+
+  <div id="map" style="width: 600px; height: 400px"></div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="PPR_Program_Sites.geojson"></script>
+
+  <script>
+
+    var map = L.map('map').setView([39.95, -75.16], 11);
+// rasterlayer
+L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/navigation-day-v1/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoidHVxMjQxNDciLCJhIjoiY21sc3RranNwMGF0czNmbmEyNWxsdzhuaSJ9.-Ol5_PuJsR8AJOdqHJQ4SQ', {
+  attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a>',
+  tileSize: 512,
+  zoomOffset: -1
+}).addTo(map);
+
+
+    console.log('Sites data:', sites);
+// other layers
+    var worldPlaces = L.geoJson(sites, {
+        filter: function(feature) {
+            return feature.properties.park_name === 'Frank Glavin Playground';
+        },
+        pointToLayer: function(feature,latlng) {
+              console.log('Adding marker at:', latlng, feature.properties)
+              // vector layer
+              return L.circleMarker(latlng, {
+                radius: 4, 
+                color: 'Green',
+                fillColor: 'Green',
+                fillOpacity: 0.9,
+                weight: 2
+              });
+        }
+    }).addTo(map);
+
+    console.log('Markers added:', worldPlaces);
+
+  </script>
+
+</body>
+</html>
